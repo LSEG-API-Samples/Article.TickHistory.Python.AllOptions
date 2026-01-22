@@ -22,7 +22,7 @@ def NewToken(un, pw):
         print ('Username or password is empty. Please type in your username and password in the Step1 section of the code and try again.')
         sys.exit()
     
-    requestUrl = 'https://selectapi.datascope.refinitiv.com/RestApi/v1/Authentication/RequestToken'    
+    requestUrl = 'https://selectapi.datascope.lseg.com/RestApi/v1/Authentication/RequestToken'    
     requestHeaders = {
         'Prefer':'respond-async',
         'Content-Type':'application/json'
@@ -44,7 +44,7 @@ def NewToken(un, pw):
     
 if token:
     #check the validity of the authentication token
-    requestUrl = 'https://selectapi.datascope.refinitiv.com/RestApi/v1/Users/Users(' + userName + ')'
+    requestUrl = 'https://selectapi.datascope.lseg.com/RestApi/v1/Users/Users(' + userName + ')'
     requestHeaders = {
         'Prefer':'respond-async',
         'Content-Type':'application/json',
@@ -63,7 +63,7 @@ print(token)
 
 #Step 2: create instrument list using search
 
-requestUrl = 'https://selectapi.datascope.refinitiv.com/RestApi/v1/Search/FuturesAndOptionsSearch'
+requestUrl = 'https://selectapi.datascope.lseg.com/RestApi/v1/Search/FuturesAndOptionsSearch'
 
 requestHeaders = {
     'Prefer':'respond-async;odata.maxpagesize=5000',
@@ -73,7 +73,7 @@ requestHeaders = {
 
 requestBody = {
     'SearchRequest': {
-      '@odata.context': 'http://selectapi.datascope.refinitiv.com/RestApi/v1/$metadata#DataScope.Select.Api.Search.FuturesAndOptionsSearchRequest',
+      '@odata.context': 'http://selectapi.datascope.lseg.com/RestApi/v1/$metadata#DataScope.Select.Api.Search.FuturesAndOptionsSearchRequest',
       'FuturesAndOptionsType': 'Options',
       'UnderlyingRic': '.SPX',
       'ExpirationDate': {
@@ -111,7 +111,7 @@ instrumentList = tmpDF.to_dict('records')
 
 ###Step 3: send an on demand extraction request using the received token 
 
-requestUrl='https://selectapi.datascope.refinitiv.com/RestApi/v1/Extractions/ExtractRaw'
+requestUrl='https://selectapi.datascope.lseg.com/RestApi/v1/Extractions/ExtractRaw'
 
 requestHeaders={
     'Prefer':'respond-async',
@@ -188,7 +188,7 @@ if r4.status_code == 200 :
     print ('jobId: ' + jobId + '\n')
     notes = r4Json["Notes"]
     print ('Extraction notes:\n' + notes[0])
-    requestUrl = 'https://selectapi.datascope.refinitiv.com/RestApi/v1/Extractions/RawExtractionResults' + "('" + jobId + "')" + '/$value'
+    requestUrl = 'https://selectapi.datascope.lseg.com/RestApi/v1/Extractions/RawExtractionResults' + "('" + jobId + "')" + '/$value'
     requestHeaders={
         'Prefer': 'respond-async',
         'Content-Type': 'text/plain',
